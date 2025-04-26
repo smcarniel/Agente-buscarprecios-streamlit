@@ -14,6 +14,7 @@ Este agente permite subir una lista de productos, buscar los mejores precios en 
 - Barra de progreso en vivo.
 - Resultados visibles en pantalla.
 - Descarga directa del informe final en Excel.
+- **Nuevo**: Botón alternativo para buscar precios en **múltiples sitios** (MercadoLibre, Cetrogar, Musimundo, etc).
 
 ---
 
@@ -67,8 +68,10 @@ streamlit run app_streamlit_precios_cloud_bs4_mejorado.py
 
 1. Subí tu archivo `productos.xlsx` (columna B con los nombres de productos).
 2. Seleccioná la cantidad de precios a buscar.
-3. Click en **"Buscar precios"**.
-4. Descargá el Excel final con los resultados.
+3. Click en **"Buscar precios MercadoLibre"** o **"Buscar en múltiples sitios"**.
+4. Descargá el Excel final correspondiente:
+   - `precios_buscados_bs4_mejorado.xlsx` (solo MercadoLibre)
+   - `precios_buscados_bs4_mejorado_MS.xlsx` (múltiples sitios)
 
 ---
 
@@ -82,5 +85,11 @@ streamlit run app_streamlit_precios_cloud_bs4_mejorado.py
 
 # 🚀 Estado del Proyecto
 
-☑️ Finalizado y funcional en Streamlit Cloud. ☑️ Mejoras futuras posibles: agregar filtros de precios, multisitio, búsqueda avanzada.
+☑️ Finalizado y funcional en Streamlit Cloud.
+☑️ Nueva versión 2024:
+- Busqueda opcional en múltiples sitios.
+- Resultados separados para distintas fuentes.
+- Mayor flexibilidad y robustez.
+
+☑️ Mejoras futuras posibles: agregar filtros de precios, integración de nuevos sitios, búsqueda avanzada.
 
