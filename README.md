@@ -11,10 +11,11 @@ Este agente permite subir una lista de productos, buscar los mejores precios en 
 - Subí un archivo `.xlsx` con los productos.
 - Elegí cuántos precios querés buscar (1, 3, 5, 10 o 15).
 - Búsqueda automática en MercadoLibre usando `requests` + `BeautifulSoup`.
+- Búsqueda automática en **múltiples sitios** (MercadoLibre, Cetrogar, Musimundo, etc).
 - Barra de progreso en vivo.
 - Resultados visibles en pantalla.
 - Descarga directa del informe final en Excel.
-- **Nuevo**: Botón alternativo para buscar precios en **múltiples sitios** (MercadoLibre, Cetrogar, Musimundo, etc).
+- Archivos de resultados separados según la opción elegida (MercadoLibre o Múltisitios).
 
 ---
 
@@ -47,7 +48,7 @@ pip install -r requirements.txt
 3. Corré la aplicación:
 
 ```bash
-streamlit run app_streamlit_precios_cloud_bs4_mejorado.py
+streamlit run app_streamlit_precios_final_mejorado.py
 ```
 
 ---
@@ -59,7 +60,7 @@ streamlit run app_streamlit_precios_cloud_bs4_mejorado.py
 3. Creá una nueva aplicación:
    - Repositorio: tu repo de GitHub.
    - Rama: main (o la que uses).
-   - Archivo principal: `app_streamlit_precios_cloud_bs4_mejorado.py`
+   - Archivo principal: `app_streamlit_precios_final_mejorado.py`
 4. Deployá y usá tu agente online.
 
 ---
@@ -90,6 +91,43 @@ streamlit run app_streamlit_precios_cloud_bs4_mejorado.py
 - Busqueda opcional en múltiples sitios.
 - Resultados separados para distintas fuentes.
 - Mayor flexibilidad y robustez.
+- Integración de barra de progreso en tiempo real.
+- Selección de cantidad de precios a buscar.
 
 ☑️ Mejoras futuras posibles: agregar filtros de precios, integración de nuevos sitios, búsqueda avanzada.
 
+---
+
+## 📅 Guía para Agregar Nuevos Sitios al Multisitio
+
+Para expandir el sistema de búsqueda a nuevos sitios, seguí estos pasos:
+
+1. **Crear una nueva función**:
+
+```python
+def buscar_precios_nuevositio(producto, cantidad):
+    # Usar requests y BeautifulSoup para hacer scraping del sitio
+    # Devolver una lista de tuplas: (precio, enlace)
+    return lista_de_precios
+```
+
+2. **Agregar la función al flujo multisitio**:
+
+Dentro de `buscar_precios_multisitio(producto, cantidad)`, agregá:
+
+```python
+precios_nuevositio = buscar_precios_nuevositio(producto, cantidad)
+resultados.extend(precios_nuevositio)
+```
+
+3. **Mantener la estructura**:
+- Cada precio debe ser una tupla `(precio, link)`, igual que en MercadoLibre.
+- El sistema ordena automáticamente todos los precios encontrados.
+
+4. **Probar y ajustar**:
+- Probar si el scraping funciona correctamente.
+- Ajustar selectores CSS si la página cambia su estructura.
+
+---
+
+De esta manera, el agente podrá crecer de forma modular y profesional, adaptándose a nuevos sitios de manera sencilla. 🚀
