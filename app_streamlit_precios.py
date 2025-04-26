@@ -22,18 +22,36 @@ def buscar_precios_mercadolibre(producto, intentos=2):
                 continue
             soup = BeautifulSoup(response.text, "html.parser")
             resultados = []
-            for item in soup.select(".ui-search-layout__item")[:8]:
+
+            items = soup.select(".ui-search-layout__item")[:12]  # Aumentamos el rango a 12
+            for item in items:
                 try:
-                    titulo = item.select_one(".ui-search-item__title").text.lower()
+                    titulo_tag = item.select_one(".ui-search-item__title")
+                    if not titulo_tag:
+                        continue  # Si no hay título, saltar
+
+                    titulo = titulo_tag.text.lower()
                     if any(palabra in titulo for palabra in palabras_excluir):
                         continue
-                    precio_texto = item.select_one(".andes-money-amount__fraction").text.replace(".", "")
+
+                    precio_tag = item.select_one(".andes-money-amount__fraction")
+                    if not precio_tag:
+                        continue  # Si no hay precio, saltar
+
+                    precio_texto = precio_tag.text.replace(".", "")
                     precio = int(precio_texto)
-                    link = item.select_one("a")['href']
+
+                    link_tag = item.select_one("a")
+                    if not link_tag or not link_tag.get('href'):
+                        continue
+
+                    link = link_tag['href']
                     tienda = "MercadoLibre"
                     resultados.append((precio, tienda, link))
+
                 except Exception:
                     continue
+
             resultados_ordenados = sorted(resultados, key=lambda x: x[0])
             return resultados_ordenados[:3]
         except Exception as e:
