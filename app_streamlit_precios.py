@@ -4,13 +4,15 @@ import time
 import random
 import requests
 from bs4 import BeautifulSoup
-import io  # Importamos BytesIO para exportar bien el Excel
+import io
 
 def buscar_precios_mercadolibre(producto, intentos=2):
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36"
     }
     url = f"https://listado.mercadolibre.com.ar/{producto.replace(' ', '-')}_OrderId_PRICE"
+
+    palabras_excluir = ["broches", "pack", "insumos", "repuesto"]
 
     for intento in range(intentos):
         try:
@@ -20,14 +22,17 @@ def buscar_precios_mercadolibre(producto, intentos=2):
                 continue
             soup = BeautifulSoup(response.text, "html.parser")
             resultados = []
-            for item in soup.select(".ui-search-layout__item")[:5]:
+            for item in soup.select(".ui-search-layout__item")[:8]:
                 try:
+                    titulo = item.select_one(".ui-search-item__title").text.lower()
+                    if any(palabra in titulo for palabra in palabras_excluir):
+                        continue
                     precio_texto = item.select_one(".andes-money-amount__fraction").text.replace(".", "")
                     precio = int(precio_texto)
                     link = item.select_one("a")['href']
                     tienda = "MercadoLibre"
                     resultados.append((precio, tienda, link))
-                except Exception as e:
+                except Exception:
                     continue
             resultados_ordenados = sorted(resultados, key=lambda x: x[0])
             return resultados_ordenados[:3]
